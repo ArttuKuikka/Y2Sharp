@@ -1,6 +1,8 @@
 # Y2Sharp
 
  !!WARNING!! this api is still under development. it does work but doesn't give any error data and also some other things!!!
+ 
+ [![.NET](https://github.com/ArttuKuikka/Y2Sharp/actions/workflows/dotnet.yml/badge.svg)](https://github.com/ArttuKuikka/Y2Sharp/actions/workflows/dotnet.yml)
 
 Fastest Youtube downloader api for C# using Y2Mate.com
 
