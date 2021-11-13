@@ -6,7 +6,17 @@ Created because i found all other youtube downloader apis were too slow for my n
 Sample code
 
 ```
-await DownloadAsync(Console.ReadLine(), "music.mp3");
+await Y2Sharp.youtube.DownloadAsync("gQjAEbWZEgU", "music.mp3");
 ```
 
-gets the video id from console and downloads it as music.mp3 into your debug directory
+install the nuget an you can use the command above. 
+
+explanations to all the parameters
+
+```
+DownloadAsync(videoid, path, type, quality);
+```
+1. videoid is the part of youtube link after watch?v=
+2. path. where you want your downloaded file to be stored (by default force creates file so be carefull)
+3. type. either mp3 or mp4. determines if downloaded content is audio or video.
+4. quality. for music the quality should allways be 128 but videos can be downloaded at any of youtubes default resulutions.
