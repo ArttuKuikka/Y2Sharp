@@ -1,4 +1,7 @@
 # Y2Sharp
+
+ !!WARNING!! this api is still under development. it does work but doesn't give any error data and also some other things!!!
+
 Fastest Youtube downloader api for C# using Y2Mate.com
 
 Created because i found all other youtube downloader apis were too slow for my need so i decided to create my own using the y2mate.com website.
