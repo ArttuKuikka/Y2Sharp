@@ -13,9 +13,13 @@ namespace Y2Sharp
         {
             while (true)
             {
-                await DownloadAsync(Console.ReadLine(), "roska.mp3");
+                DebugMode = true;
+                await DownloadAsync(Console.ReadLine(), "file.mp3");
+                
             }
         }
+
+        public static bool DebugMode = false;
         
         public static async Task DownloadAsync(string videoid, string path, string type = "mp3", string quality = "128")
         {
@@ -39,7 +43,12 @@ namespace Y2Sharp
 
             var myHttpClient = new HttpClient();
             var response = await myHttpClient.PostAsync(uri.ToString(), formContent);
-            Console.WriteLine(await response.Content.ReadAsStringAsync());
+
+            if (DebugMode)
+            {
+                Console.WriteLine(await response.Content.ReadAsStringAsync());
+            }
+            
 
 
 
@@ -55,9 +64,12 @@ namespace Y2Sharp
                     var link = (getBetween(result, @"href=\" + quote, quote + " rel="));
                     //Console.WriteLine(link);
                 link = link.Replace(@"\", string.Empty);
-                //Console.WriteLine(link);
+                if (DebugMode)
+                {
+                    Console.WriteLine(link);
+                }
 
-                
+
 
                 var httpClient = new HttpClient();
 
@@ -66,7 +78,12 @@ namespace Y2Sharp
                         using (var fileStream = new FileStream(path, FileMode.Create))
                         {
                             await stream.CopyToAsync(fileStream);
-                           // return fileStream;
+
+
+                        if (DebugMode)
+                        {
+                            Console.WriteLine(Path.Combine(Directory.GetCurrentDirectory(), path).ToString());
+                        }
                         }
                     }
 
@@ -114,7 +131,13 @@ namespace Y2Sharp
                 link = link.Replace(quote.ToString(), string.Empty);
                 link = link.Replace(@"\", string.Empty);
 
+                if (DebugMode)
+                {
+                    Console.WriteLine(link);
+                }
+
                 return (link);
+                
             }
 
 

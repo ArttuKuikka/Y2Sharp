@@ -1,10 +1,16 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <OutputType>Exe</OutputType>
     <TargetFramework>net5.0</TargetFramework>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
-    <Version>1.0.3</Version>
+    <Version>1.0.4</Version>
+    <Authors>Arttu Kuikka</Authors>
+    <PackageProjectUrl>https://github.com/ArttuKuikka/Y2Sharp</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/ArttuKuikka/Y2Sharp</RepositoryUrl>
+    <RepositoryType>Github</RepositoryType>
+    <Description>Fastest youtube downloader API using Y2Mate.com</Description>
+    <PackageLicenseExpression></PackageLicenseExpression>
   </PropertyGroup>
 
 </Project>
