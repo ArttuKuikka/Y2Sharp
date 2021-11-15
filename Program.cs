@@ -14,7 +14,7 @@ namespace Y2Sharp
             while (true)
             {
                 DebugMode = true;
-                await DownloadAsync(Console.ReadLine(), "file.mp3");
+                await DownloadAsync(Console.ReadLine(), "file.mp4", "mp4", "1080");
                 
             }
         }
@@ -48,6 +48,16 @@ namespace Y2Sharp
             {
                 Console.WriteLine(await response.Content.ReadAsStringAsync());
             }
+
+            var errorcontent = await response.Content.ReadAsStringAsync();
+            if(errorcontent.Contains("Try again in"))
+            {
+                throw new Exception("y2mate.com returned Try again in 5 seconds. Might be cause by wrong video id");
+            }
+            if(errorcontent.Contains("Press f5 to try again."))
+            {
+                throw new Exception("y2mate.com returned Press f5 to try again. Might be caused by wrong quality or type");
+            }
             
 
 
@@ -79,8 +89,19 @@ namespace Y2Sharp
                         {
                             await stream.CopyToAsync(fileStream);
 
+                        using (var errorreader = new StreamReader(stream, encoding: Encoding.UTF8))
+                        {
+                            var error = await errorreader.ReadToEndAsync();
+                            if(error == "Your session has expired.")
+                            {
+                                throw new Exception(@"y2mate.com returned Your session has expired. This happends sometimes and i dont know why but its because of y2mate :D");
+                            }
+                        }
 
-                        if (DebugMode)
+
+
+
+                            if (DebugMode)
                         {
                             Console.WriteLine(Path.Combine(Directory.GetCurrentDirectory(), path).ToString());
                         }
@@ -126,17 +147,22 @@ namespace Y2Sharp
                 char quote = '\u0022';
                 
 
-                var link = (getBetween(result, @"var k__id = \", "; var video_service"));
+                var id = (getBetween(result, @"var k__id = \", "; var video_service"));
                 
-                link = link.Replace(quote.ToString(), string.Empty);
-                link = link.Replace(@"\", string.Empty);
+                id = id.Replace(quote.ToString(), string.Empty);
+                id = id.Replace(@"\", string.Empty);
 
                 if (DebugMode)
                 {
-                    Console.WriteLine(link);
+                    Console.WriteLine(id);
                 }
 
-                return (link);
+                if(id == string.Empty)
+                {
+                    throw new Exception("Error getting __id from y2mate.com");
+                }
+
+                return (id);
                 
             }
 
