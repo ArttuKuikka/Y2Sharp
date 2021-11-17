@@ -14,7 +14,7 @@ namespace Y2Sharp
             while (true)
             {
                 DebugMode = true;
-                await DownloadAsync(Console.ReadLine(), "file.mp4", "mp4", "1080");
+                await DownloadAsync(Console.ReadLine(), "file.mp3", "mp3", "128");
                 
             }
         }
@@ -87,34 +87,36 @@ namespace Y2Sharp
                     {
                         using (var fileStream = new FileStream(path, FileMode.Create))
                         {
-                            await stream.CopyToAsync(fileStream);
-
-                        using (var errorreader = new StreamReader(stream, encoding: Encoding.UTF8))
-                        {
-                            var error = await errorreader.ReadToEndAsync();
-                            if(error == "Your session has expired.")
-                            {
-                                throw new Exception(@"y2mate.com returned Your session has expired. This happends sometimes and i dont know why but its because of y2mate :D");
-                            }
-                        }
-
-
-
+                        await stream.CopyToAsync(fileStream);
 
                             if (DebugMode)
                         {
                             Console.WriteLine(Path.Combine(Directory.GetCurrentDirectory(), path).ToString());
                         }
-                        }
+                        
                     }
 
+                }
+
+                using (var errorstream = await httpClient.GetStreamAsync(link))
+                {
+                  
+                        using (var errorreader = new StreamReader(errorstream))
+                        {
+                            var error = await errorreader.ReadToEndAsync();
+                            Console.BackgroundColor = ConsoleColor.Red;
+                            Console.WriteLine(error);
+                            Console.ResetColor();
+                            if (error == "Your session has expired.")                                                   //ei toimi !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+                            {
+                                throw new Exception(@"y2mate.com returned Your session has expired. This happends sometimes and i dont know why but its because of y2mate :D");
+                            }
+                        }
+
+                }
+
             }
-            
-            
-
-
-
-            
+       
 
         }
 
