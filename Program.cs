@@ -9,17 +9,77 @@ namespace Y2Sharp
 {
     public class youtube
     {
+        //TODO ajax.js antaa kaiken
+        //video title <div class=\"caption text-left\"> <b>Valence - Infinite [NCS Release]<\/b> <\/div> 
+        //video resolutions check if ajax response contain resot esim 144p. yritä tehä joku parempi ku if loop kaikille
+        //downloading juttu
+        //thumbnail ehk https://i.ytimg.com/vi/gwrpFMNUo-s/0.jpg  class=\"video-thumbnail\"> <img src=\"https:\/\/i.ytimg.com\/vi\/QHoqD47gQG8\/0.jpg\" 
+
         public static async Task Main(string[] args)
         {
             while (true)
             {
                 DebugMode = true;
-                await DownloadAsync(Console.ReadLine(), "file.mp3", "mp3", "128");
+
+                string videoid = Console.ReadLine();
+
                 
+
+                await DownloadAsync(videoid, "file.mp3", "mp3", "128");
+
+                Console.BackgroundColor = ConsoleColor.DarkRed;
+                Console.WriteLine(await VideotitleAsync(videoid));
+                Console.ResetColor();
             }
         }
 
+        
+
         public static bool DebugMode = false;
+
+        public static async Task<string> VideotitleAsync(string videoid)
+        {
+            var url = "https://www.y2mate.com/mates/analyze/ajax";
+            var yturl = "https://www.youtube.com/watch?v=" + videoid;
+
+            var formContent = new FormUrlEncodedContent(new[]
+          {
+
+    new KeyValuePair<string, string>("url", yturl),
+    new KeyValuePair<string, string>("q_auto", "1"),
+    new KeyValuePair<string, string>("ajax", "1")
+});
+
+            var myHttpClient = new HttpClient();
+            var response = await myHttpClient.PostAsync(url.ToString(), formContent);
+
+
+
+
+
+
+            using (var streamReader = new StreamReader(await response.Content.ReadAsStreamAsync(), encoding: Encoding.UTF8))
+            {
+                string result = streamReader.ReadToEnd();
+
+               
+
+
+                char quote = '\u0022';
+                char backslash = '\u005c';
+
+                var beforetitle = "caption text-left" + backslash.ToString() + "> <b>"; 
+
+                var title = getBetween(result, "k_data_vtitle = ", ";"); //title: \"Creo - Lightmare\"
+                title = title.Replace(quote.ToString(), string.Empty);
+                title = title.Replace(backslash.ToString(), string.Empty);
+
+                return (title); 
+
+            }
+
+           
+        }
         
         public static async Task DownloadAsync(string videoid, string path, string type = "mp3", string quality = "128")
         {
@@ -105,9 +165,9 @@ namespace Y2Sharp
                         {
                             var error = await errorreader.ReadToEndAsync();
                             Console.BackgroundColor = ConsoleColor.Red;
-                            Console.WriteLine(error);
+                           // Console.WriteLine(error);
                             Console.ResetColor();
-                            if (error == "Your session has expired.")                                                   //ei toimi !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+                            if (error == "Your session has expired.")                                                  
                             {
                                 throw new Exception(@"y2mate.com returned Your session has expired. This happends sometimes and i dont know why but its because of y2mate :D");
                             }
