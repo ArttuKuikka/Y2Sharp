@@ -167,7 +167,7 @@ namespace Y2Sharp
                             Console.BackgroundColor = ConsoleColor.Red;
                            // Console.WriteLine(error);
                             Console.ResetColor();
-                            if (error == "Your session has expired.")                                                  
+                            if (error == "Your session has expired.")
                             {
                                 throw new Exception(@"y2mate.com returned Your session has expired. This happends sometimes and i dont know why but its because of y2mate :D");
                             }
