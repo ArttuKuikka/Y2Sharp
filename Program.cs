@@ -4,16 +4,15 @@ using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace Y2Sharp
 {
     public class youtube
     {
-        //TODO ajax.js antaa kaiken
-        //video title <div class=\"caption text-left\"> <b>Valence - Infinite [NCS Release]<\/b> <\/div> 
-        //video resolutions check if ajax response contain resot esim 144p. yritä tehä joku parempi ku if loop kaikille
-        //downloading juttu
-        //thumbnail ehk https://i.ytimg.com/vi/gwrpFMNUo-s/0.jpg  class=\"video-thumbnail\"> <img src=\"https:\/\/i.ytimg.com\/vi\/QHoqD47gQG8\/0.jpg\" 
+     
+        
+       
 
         public static async Task Main(string[] args)
         {
@@ -30,12 +29,78 @@ namespace Y2Sharp
                 Console.BackgroundColor = ConsoleColor.DarkRed;
                 Console.WriteLine(await VideotitleAsync(videoid));
                 Console.ResetColor();
+
+                Console.BackgroundColor = ConsoleColor.Cyan;
+                string temp = string.Empty;
+                foreach (string test in await ResolutionsAsync(videoid)) 
+                {
+                    if (temp == string.Empty)
+                    {
+                        temp = test;
+                    }
+                    else
+                    {
+                        temp += ", " + test;
+                    }
+
+
+                }
+                Console.WriteLine(temp);
+                Console.ResetColor();
             }
         }
 
         
 
         public static bool DebugMode = false;
+
+
+        public static async Task<List<string>> ResolutionsAsync(string videoid)
+        {
+            var url = "https://www.y2mate.com/mates/analyze/ajax";
+            var yturl = "https://www.youtube.com/watch?v=" + videoid;
+
+            var formContent = new FormUrlEncodedContent(new[]
+          {
+
+    new KeyValuePair<string, string>("url", yturl),
+    new KeyValuePair<string, string>("q_auto", "1"),
+    new KeyValuePair<string, string>("ajax", "1")
+});
+
+            var myHttpClient = new HttpClient();
+            var response = await myHttpClient.PostAsync(url.ToString(), formContent);
+
+            using (var streamReader = new StreamReader(await response.Content.ReadAsStreamAsync(), encoding: Encoding.UTF8))
+            {
+                string result = streamReader.ReadToEnd();
+
+                var acceptableResolutions = new List<string>
+{
+    "144p",
+    "240p",
+    "360p",
+    "480p",
+    "720p",
+    "1080p",
+};
+                var resList = acceptableResolutions.Where(r => result.Contains(r)).ToList();
+
+
+                resList.RemoveAll(item => item == string.Empty);
+
+                return resList;
+
+            }
+        }
+
+        public static string Videothumbnailurl(string videoid)
+        {
+            
+            if(videoid == null) { throw new Exception("videoid was null"); }
+            
+            return ("https://i.ytimg.com/vi/" + videoid + "/0.jpg");
+        }
 
         public static async Task<string> VideotitleAsync(string videoid)
         {
@@ -70,17 +135,17 @@ namespace Y2Sharp
 
                 var beforetitle = "caption text-left" + backslash.ToString() + "> <b>"; 
 
-                var title = getBetween(result, "k_data_vtitle = ", ";"); //title: \"Creo - Lightmare\"
+                var title = GetBetween(result, "k_data_vtitle = ", ";"); 
                 title = title.Replace(quote.ToString(), string.Empty);
                 title = title.Replace(backslash.ToString(), string.Empty);
 
-                return (title); 
+                return title; 
 
             }
 
            
         }
-        
+        //download video
         public static async Task DownloadAsync(string videoid, string path, string type = "mp3", string quality = "128")
         {
             var uri = "https://www.y2mate.com/mates/convert";
@@ -131,7 +196,7 @@ namespace Y2Sharp
 
                     char quote = '\u0022';
 
-                    var link = (getBetween(result, @"href=\" + quote, quote + " rel="));
+                    var link = (GetBetween(result, @"href=\" + quote, quote + " rel="));
                     //Console.WriteLine(link);
                 link = link.Replace(@"\", string.Empty);
                 if (DebugMode)
@@ -209,7 +274,7 @@ namespace Y2Sharp
                 char quote = '\u0022';
                 
 
-                var id = (getBetween(result, @"var k__id = \", "; var video_service"));
+                var id = (GetBetween(result, @"var k__id = \", "; var video_service"));
                 
                 id = id.Replace(quote.ToString(), string.Empty);
                 id = id.Replace(@"\", string.Empty);
@@ -233,7 +298,7 @@ namespace Y2Sharp
                 
         }
 
-        private static string getBetween(string strSource, string strStart, string strEnd)
+        private static string GetBetween(string strSource, string strStart, string strEnd)
         {
             if (strSource.Contains(strStart) && strSource.Contains(strEnd))
             {
@@ -245,5 +310,7 @@ namespace Y2Sharp
 
             return "";
         }
+
+        
     }
 }
