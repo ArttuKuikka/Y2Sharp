@@ -5,7 +5,7 @@ VisualStudioVersion = 16.0.31702.278
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Y2Sharp", "Y2Sharp.csproj", "{E037150C-C3C4-4371-B54B-B5D76FC8F1AE}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Y2SharpWPF", "..\Y2SharpWPF\Y2SharpWPF.csproj", "{718FB392-B021-47E6-B0B9-7353F67FF8C8}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Y2SharpWPF", "Y2SharpWPF\Y2SharpWPF.csproj", "{060FA56D-DE9E-4B75-92C0-9AEB16810935}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -17,10 +17,10 @@ Global
 		{E037150C-C3C4-4371-B54B-B5D76FC8F1AE}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{E037150C-C3C4-4371-B54B-B5D76FC8F1AE}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{E037150C-C3C4-4371-B54B-B5D76FC8F1AE}.Release|Any CPU.Build.0 = Release|Any CPU
-		{718FB392-B021-47E6-B0B9-7353F67FF8C8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{718FB392-B021-47E6-B0B9-7353F67FF8C8}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{718FB392-B021-47E6-B0B9-7353F67FF8C8}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{718FB392-B021-47E6-B0B9-7353F67FF8C8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{060FA56D-DE9E-4B75-92C0-9AEB16810935}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{060FA56D-DE9E-4B75-92C0-9AEB16810935}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{060FA56D-DE9E-4B75-92C0-9AEB16810935}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{060FA56D-DE9E-4B75-92C0-9AEB16810935}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
