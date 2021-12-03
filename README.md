@@ -2,7 +2,7 @@
 
  
  
- [![.NET](https://github.com/ArttuKuikka/Y2Sharp/actions/workflows/dotnet.yml/badge.svg)](https://github.com/ArttuKuikka/Y2Sharp/actions/workflows/dotnet.yml)
+ 
 
 Fastest Youtube downloader api for C# using Y2Mate.com
 
