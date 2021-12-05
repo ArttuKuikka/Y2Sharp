@@ -57,7 +57,12 @@ namespace Y2SharpWPF
 
         public void DownloadButton_ClickAsync(object sender, RoutedEventArgs e)
         {
-            if(URLtextbox.Text == string.Empty)
+            downloadAsync();
+        }
+
+        public async Task downloadAsync()
+        {
+            if (URLtextbox.Text == string.Empty)
             {
                 MessageBox.Show("Empty url error!", "Y2Sharp error message");
                 return;
@@ -77,28 +82,28 @@ namespace Y2SharpWPF
             }
 
             string videourl = URLtextbox.Text;
-            string videoid = videourl.Remove(0, 32);   
+            string videoid = videourl.Remove(0, 32);
             videoid = videoid.Remove(11, videoid.Length - 11);
 
             string quality = "128";
-            if(typebox.SelectedItem.ToString() == "MP3")
+            if (typebox.SelectedItem.ToString() == "MP3")
             {
                 quality = qualitybox.SelectedItem.ToString().Substring(0, qualitybox.SelectedItem.ToString().Length - 4);
             }
-            if(typebox.SelectedItem.ToString() == "MP4")
+            if (typebox.SelectedItem.ToString() == "MP4")
             {
-                quality = qualitybox.SelectedItem.ToString().Substring(0, qualitybox.SelectedItem.ToString().Length -1);
+                quality = qualitybox.SelectedItem.ToString().Substring(0, qualitybox.SelectedItem.ToString().Length - 1);
             }
 
 
             string typetext = "MP3";
             SaveFileDialog saveFileDialog = new SaveFileDialog();
-            saveFileDialog.FileName = "video";
-            if(typebox.SelectedItem.ToString() == "MP3") { typetext = "Audio Files"; }
-            if(typebox.SelectedItem.ToString() == "MP4") { typetext = "Video Files"; }
+            saveFileDialog.FileName = await Y2Sharp.youtube.VideotitleAsync(videoid);
+            if (typebox.SelectedItem.ToString() == "MP3") { typetext = "Audio Files"; }
+            if (typebox.SelectedItem.ToString() == "MP4") { typetext = "Video Files"; }
             saveFileDialog.Filter = typetext + " | *." + typebox.SelectedItem.ToString().ToLower();
             saveFileDialog.DefaultExt = "." + typebox.SelectedItem.ToString().ToLower();
-            saveFileDialog.InitialDirectory = "C:";
+            saveFileDialog.InitialDirectory = "::{20D04FE0-3AEA-1069-A2D8-08002B30309D}";
             saveFileDialog.ShowDialog();
 
 
@@ -107,9 +112,9 @@ namespace Y2SharpWPF
 
             try
             {
-                Y2Sharp.youtube.DownloadAsync(videoid, System.IO.Path.GetFullPath(saveFileDialog.FileName).ToString(), typebox.SelectedItem.ToString().ToLower(), quality);
+                await Y2Sharp.youtube.DownloadAsync(videoid, System.IO.Path.GetFullPath(saveFileDialog.FileName).ToString(), typebox.SelectedItem.ToString().ToLower(), quality);
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 MessageBox.Show(ex.ToString(), "Y2Sharp WPF error message");
                 return;
