@@ -7,11 +7,11 @@
         mc:Ignorable="d"
         Title="Y2Sharp WPF" Height="400" Width="800">
     <Grid Background="#FF2E2E2E">
-        <TextBox x:Name="URLtextbox" HorizontalAlignment="Center" Margin="0,52,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="668" Background="#FF535353" BorderBrush="#FF686868" Foreground="White" Height="25" TextChanged="URLtextbox_TextChanged"/>
+        <TextBox x:Name="URLtextbox" HorizontalAlignment="Center" Margin="0,67,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="668" Background="#FF535353" BorderBrush="#FF686868" Foreground="White" Height="25" TextChanged="URLtextbox_TextChanged" GotFocus="URLtextbox_GotFocus" LostFocus="URLtextbox_LostFocus" FontSize="14" Text="Youtube URL..."/>
         <Button x:Name="DownloadButton" Content="Download" Margin="254,283,254,16" Background="#FF535353" BorderBrush="#FF686868" FontSize="22" Click="DownloadButton_ClickAsync"/>
         <ComboBox x:Name="typebox" HorizontalAlignment="Center" Margin="0,124,0,0" VerticalAlignment="Top" Width="270" Height="47" Background="#FF535353" FontSize="18" SelectionChanged="typebox_SelectionChanged"/>
-        <TextBlock HorizontalAlignment="Center" Margin="0,5,0,0" Text="Youtube URL:" TextWrapping="Wrap" VerticalAlignment="Top" Foreground="Black" Height="47" Width="232" FontSize="34" TextAlignment="Center"/>
+        <TextBlock HorizontalAlignment="Center" Margin="0,5,0,0" Text="Y2SharpWPF" TextWrapping="Wrap" VerticalAlignment="Top" Foreground="White" Height="47" Width="232" FontSize="38" TextAlignment="Center"/>
         <ComboBox x:Name="qualitybox" HorizontalAlignment="Center" Margin="0,203,0,0" VerticalAlignment="Top" Width="270" Height="47" Background="#FF535353"/>
-        
+
     </Grid>
 </Window>

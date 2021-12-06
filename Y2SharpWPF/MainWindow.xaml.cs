@@ -100,27 +100,38 @@ namespace Y2SharpWPF
             saveFileDialog.Filter = typetext + " | *." + typebox.SelectedItem.ToString().ToLower();
             saveFileDialog.DefaultExt = "." + typebox.SelectedItem.ToString().ToLower();
             saveFileDialog.InitialDirectory = "::{20D04FE0-3AEA-1069-A2D8-08002B30309D}";
-            saveFileDialog.ShowDialog();
-
-
             
 
 
-            try
+            
+            if(saveFileDialog.ShowDialog() == true)
             {
-                await Y2Sharp.youtube.DownloadAsync(videoid, System.IO.Path.GetFullPath(saveFileDialog.FileName).ToString(), typebox.SelectedItem.ToString().ToLower(), quality);
+                try
+                {
+                    await Y2Sharp.youtube.DownloadAsync(videoid, System.IO.Path.GetFullPath(saveFileDialog.FileName).ToString(), typebox.SelectedItem.ToString().ToLower(), quality);
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show(ex.ToString(), "Y2Sharp WPF error message");
+                    return;
+                }
+
+                MessageBox.Show("Video saved to: " + System.IO.Path.GetFullPath(saveFileDialog.FileName.ToString()), "Y2Sharp info message");
             }
-            catch (Exception ex)
+            else
             {
-                MessageBox.Show(ex.ToString(), "Y2Sharp WPF error message");
+               
                 return;
             }
 
-            MessageBox.Show("Video saved to: " + System.IO.Path.GetFullPath(saveFileDialog.FileName.ToString()), "Y2Sharp info message");
+            
         }
 
         private async void URLtextbox_TextChanged(object sender, TextChangedEventArgs e)
         {
+            if(URLtextbox.Text == "Youtube URL...") { return; }
+            if(URLtextbox.Text == string.Empty) { return; }
+            
             string videourl = URLtextbox.Text;
             videoid = videourl.Remove(0, 32);
             videoid = videoid.Remove(11, videoid.Length - 11);
@@ -138,6 +149,23 @@ namespace Y2SharpWPF
                 {
                     qualitybox.Items.Add(res);
                 }
+                
+            }
+        }
+
+        private void URLtextbox_GotFocus(object sender, RoutedEventArgs e)
+        {
+            if(URLtextbox.Text == "Youtube URL...")
+            {
+                URLtextbox.Text = string.Empty;
+            }
+        }
+
+        private void URLtextbox_LostFocus(object sender, RoutedEventArgs e)
+        {
+            if(URLtextbox.Text == string.Empty)
+            {
+                URLtextbox.Text = "Youtube URL...";
             }
         }
     }
