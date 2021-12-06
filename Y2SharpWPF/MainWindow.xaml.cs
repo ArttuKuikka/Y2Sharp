@@ -25,6 +25,7 @@ namespace Y2SharpWPF
     
     public partial class MainWindow : Window
     {
+        public string videoid;
         public MainWindow()
         {
             InitializeComponent();
@@ -33,7 +34,7 @@ namespace Y2SharpWPF
             typebox.SelectedItem = "MP3";
         }
 
-        private void typebox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        private async void typebox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             
             if(typebox.SelectedItem.ToString() == "MP3")
@@ -45,13 +46,10 @@ namespace Y2SharpWPF
             else if(typebox.SelectedItem.ToString() == "MP4")
             {
                 qualitybox.Items.Clear();
-                qualitybox.Items.Add("144p");
-                qualitybox.Items.Add("240p");
-                qualitybox.Items.Add("360p");
-                qualitybox.Items.Add("480p");
-                qualitybox.Items.Add("720p");
-                qualitybox.Items.Add("1080p");
-                qualitybox.SelectedItem = "1080p";
+                foreach(var res in await Y2Sharp.youtube.ResolutionsAsync(videoid))
+                {
+                    qualitybox.Items.Add(res);
+                }
             }
         }
 
@@ -81,9 +79,7 @@ namespace Y2SharpWPF
                 }
             }
 
-            string videourl = URLtextbox.Text;
-            string videoid = videourl.Remove(0, 32);
-            videoid = videoid.Remove(11, videoid.Length - 11);
+            
 
             string quality = "128";
             if (typebox.SelectedItem.ToString() == "MP3")
@@ -107,7 +103,7 @@ namespace Y2SharpWPF
             saveFileDialog.ShowDialog();
 
 
-            //jos video resuluutio on pienimpi ku mitä yrittää ladata ei toimi
+            
 
 
             try
@@ -123,6 +119,26 @@ namespace Y2SharpWPF
             MessageBox.Show("Video saved to: " + System.IO.Path.GetFullPath(saveFileDialog.FileName.ToString()), "Y2Sharp info message");
         }
 
-       
+        private async void URLtextbox_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            string videourl = URLtextbox.Text;
+            videoid = videourl.Remove(0, 32);
+            videoid = videoid.Remove(11, videoid.Length - 11);
+
+            if (typebox.SelectedItem.ToString() == "MP3")
+            {
+                qualitybox.Items.Clear();
+                qualitybox.Items.Add("128kbps");
+                qualitybox.SelectedItem = "128kbps";
+            }
+            else if (typebox.SelectedItem.ToString() == "MP4")
+            {
+                qualitybox.Items.Clear();
+                foreach (var res in await Y2Sharp.youtube.ResolutionsAsync(videoid))
+                {
+                    qualitybox.Items.Add(res);
+                }
+            }
+        }
     }
 }
