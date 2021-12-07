@@ -16,38 +16,7 @@ namespace Y2Sharp
 
         public static async Task Main(string[] args)
         {
-            while (true)
-            {
-                DebugMode = true;
-
-                string videoid = Console.ReadLine();
-
-                
-
-                await DownloadAsync(videoid, "file.mp3", "mp3", "128");
-
-                Console.BackgroundColor = ConsoleColor.DarkRed;
-                Console.WriteLine(await VideotitleAsync(videoid));
-                Console.ResetColor();
-
-                Console.BackgroundColor = ConsoleColor.Cyan;
-                string temp = string.Empty;
-                foreach (string test in await ResolutionsAsync(videoid)) 
-                {
-                    if (temp == string.Empty)
-                    {
-                        temp = test;
-                    }
-                    else
-                    {
-                        temp += ", " + test;
-                    }
-
-
-                }
-                Console.WriteLine(temp);
-                Console.ResetColor();
-            }
+            
         }
 
         
