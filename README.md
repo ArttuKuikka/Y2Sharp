@@ -16,7 +16,7 @@ Sample code
 await Y2Sharp.youtube.DownloadAsync("gQjAEbWZEgU", "music.mp3");
 ```
 
-install the latest nuget from https://github.com/ArttuKuikka/Y2Sharp/releases and you can use the command above. 
+install the latest nuget from https://www.nuget.org/packages/Y2Sharp/ and you can use the command above. 
 
 explanations to all the parameters
 
