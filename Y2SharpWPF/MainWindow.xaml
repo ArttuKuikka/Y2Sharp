@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Y2SharpWPF"
         mc:Ignorable="d"
-        Title="Y2Sharp WPF" Height="400" Width="800">
+        Title="Y2Sharp WPF" Height="400" Width="800" Icon="/logo.png">
     <Grid Background="#FF2E2E2E">
         <TextBox x:Name="URLtextbox" HorizontalAlignment="Center" Margin="0,67,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="668" Background="#FF535353" BorderBrush="#FF686868" Foreground="White" Height="25" TextChanged="URLtextbox_TextChanged" GotFocus="URLtextbox_GotFocus" LostFocus="URLtextbox_LostFocus" FontSize="14" Text="Youtube URL..."/>
         <Button x:Name="DownloadButton" Content="Download" Margin="254,283,254,16" Background="#FF535353" BorderBrush="#FF686868" FontSize="22" Click="DownloadButton_ClickAsync"/>
