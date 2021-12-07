@@ -8,7 +8,7 @@
 
 Fastest Youtube downloader api for C# using Y2Mate.com
 
-Created because i found all other youtube downloader apis were too slow for my need so i decided to create my own using the y2mate.com website.
+Created because i found all other youtube downloader apis were too slow for my needs so i decided to create my own using the y2mate.com website.
 
 Sample code
 
