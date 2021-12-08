@@ -1,12 +1,14 @@
 # Y2Sharp
 
+![logo](https://user-images.githubusercontent.com/75498768/145097969-f49278db-7412-4368-b462-43e11cc50c86.png)
+
  
  
  
 
 Fastest Youtube downloader api for C# using Y2Mate.com
 
-Created because i found all other youtube downloader apis were too slow for my need so i decided to create my own using the y2mate.com website.
+Created because i found all other youtube downloader apis were too slow for my needs so i decided to create my own using the y2mate.com website.
 
 Sample code
 
@@ -14,7 +16,9 @@ Sample code
 await Y2Sharp.youtube.DownloadAsync("gQjAEbWZEgU", "music.mp3");
 ```
 
-install the latest nuget from https://github.com/ArttuKuikka/Y2Sharp/releases and you can use the command above. 
+There is also a WPF demo of this project under the folder Y2SharpWPF
+
+install the latest nuget from https://www.nuget.org/packages/Y2Sharp/ and you can use the command above. 
 
 explanations to all the parameters
 
