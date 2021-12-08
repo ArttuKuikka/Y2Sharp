@@ -16,6 +16,8 @@ Sample code
 await Y2Sharp.youtube.DownloadAsync("gQjAEbWZEgU", "music.mp3");
 ```
 
+There is also a WPF demo of this project under the folder Y2SharpWPF
+
 install the latest nuget from https://www.nuget.org/packages/Y2Sharp/ and you can use the command above. 
 
 explanations to all the parameters
