@@ -26,6 +26,8 @@ namespace Y2Sharp
 
         public static async Task<List<string>> ResolutionsAsync(string videoid)
         {
+
+            if(videoid == string.Empty) { throw new Exception("Videoid was empty");}
             var url = "https://www.y2mate.com/mates/analyze/ajax";
             var yturl = "https://www.youtube.com/watch?v=" + videoid;
 
