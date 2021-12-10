@@ -8,26 +8,28 @@ using System.Linq;
 
 namespace Y2Sharp
 {
-    public class youtube
+    public class Youtube
     {
-     
-        
-       
 
         public static async Task Main(string[] args)
         {
-            
+            try
+            {
+                var videoid = Console.ReadLine();
+                
+                await DownloadVideoAsync(videoid, await VideotitleAsync(videoid) + ".mp3");
+            }
+            catch(Exception e)
+            {
+                Console.WriteLine(e);
+            }
         }
-
-        
-
-        public static bool DebugMode = false;
 
 
         public static async Task<List<string>> ResolutionsAsync(string videoid)
         {
 
-            if(videoid == string.Empty) { throw new Exception("Videoid was empty");}
+            if (videoid == string.Empty) { throw new Exception("Videoid was empty"); }
             var url = "https://www.y2mate.com/mates/analyze/ajax";
             var yturl = "https://www.youtube.com/watch?v=" + videoid;
 
@@ -67,14 +69,16 @@ namespace Y2Sharp
 
         public static string Videothumbnailurl(string videoid)
         {
-            
-            if(videoid == null) { throw new Exception("videoid was null"); }
-            
-            return ("https://i.ytimg.com/vi/" + videoid + "/0.jpg");
+
+            if (videoid == null) { throw new Exception("videoid was null"); }
+
+            return "https://i.ytimg.com/vi/" + videoid + "/0.jpg";
         }
 
         public static async Task<string> VideotitleAsync(string videoid)
         {
+            if (videoid == null) { throw new Exception("videoid was null"); }
+
             var url = "https://www.y2mate.com/mates/analyze/ajax";
             var yturl = "https://www.youtube.com/watch?v=" + videoid;
 
@@ -98,36 +102,30 @@ namespace Y2Sharp
             {
                 string result = streamReader.ReadToEnd();
 
-               
-
 
                 char quote = '\u0022';
                 char backslash = '\u005c';
 
-                var beforetitle = "caption text-left" + backslash.ToString() + "> <b>"; 
+                var beforetitle = "caption text-left" + backslash.ToString() + "> <b>";
 
-                var title = GetBetween(result, "k_data_vtitle = ", ";"); 
+                var title = GetBetween(result, "k_data_vtitle = ", ";");
                 title = title.Replace(quote.ToString(), string.Empty);
                 title = title.Replace(backslash.ToString(), string.Empty);
 
-                return title; 
+                return title;
 
             }
 
-           
+
         }
         //download video
-        public static async Task DownloadAsync(string videoid, string path, string type = "mp3", string quality = "128")
+        public static async Task<Stream> GetStreamAsync(string videoid, string type = "mp3", string quality = "128")
         {
             var uri = "https://www.y2mate.com/mates/convert";
 
-
-            
-
-
             var formContent = new FormUrlEncodedContent(new[]
             {
-    new KeyValuePair<string, string>("_id", await getvidAsync(videoid)),
+    new KeyValuePair<string, string>("_id", await GetYInfoAsync(videoid)),
     new KeyValuePair<string, string>("ajax", "1"),
     new KeyValuePair<string, string>("fquality", quality),
     new KeyValuePair<string, string>("ftype", type),
@@ -135,95 +133,75 @@ namespace Y2Sharp
     new KeyValuePair<string, string>("type", "youtube"),
     new KeyValuePair<string, string>("v_id", videoid)
 });
-            
+
 
             var myHttpClient = new HttpClient();
             var response = await myHttpClient.PostAsync(uri.ToString(), formContent);
 
-            if (DebugMode)
-            {
-                Console.WriteLine(await response.Content.ReadAsStringAsync());
-            }
 
             var errorcontent = await response.Content.ReadAsStringAsync();
-            if(errorcontent.Contains("Try again in"))
+            if (errorcontent.Contains("Try again in"))
             {
                 throw new Exception("y2mate.com returned Try again in 5 seconds. Might be cause by wrong video id");
             }
-            if(errorcontent.Contains("Press f5 to try again."))
+            if (errorcontent.Contains("Press f5 to try again."))
             {
                 throw new Exception("y2mate.com returned Press f5 to try again. Might be caused by wrong quality or type");
             }
-            
 
 
-
-            
-            
             using (var streamReader = new StreamReader(await response.Content.ReadAsStreamAsync(), encoding: Encoding.UTF8))
             {
-                    string result = streamReader.ReadToEnd();
+                string result = streamReader.ReadToEnd();
 
+                char quote = '\u0022';
 
-                    char quote = '\u0022';
+                var link = (GetBetween(result, @"href=\" + quote, quote + " rel="));
 
-                    var link = (GetBetween(result, @"href=\" + quote, quote + " rel="));
-                    //Console.WriteLine(link);
                 link = link.Replace(@"\", string.Empty);
-                if (DebugMode)
-                {
-                    Console.WriteLine(link);
-                }
 
-
+                if(link == string.Empty) { throw new Exception("Error getting file link"); }
 
                 var httpClient = new HttpClient();
 
-                    using (var stream = await httpClient.GetStreamAsync(link))
-                    {
-                        using (var fileStream = new FileStream(path, FileMode.Create))
-                        {
-                        await stream.CopyToAsync(fileStream);
-
-                            if (DebugMode)
-                        {
-                            Console.WriteLine(Path.Combine(Directory.GetCurrentDirectory(), path).ToString());
-                        }
-                        
-                    }
-
-                }
-
-                using (var errorstream = await httpClient.GetStreamAsync(link))
+                using (var httpStream = await httpClient.GetStreamAsync(link))
                 {
-                  
-                        using (var errorreader = new StreamReader(errorstream))
-                        {
-                            var error = await errorreader.ReadToEndAsync();
-                            Console.BackgroundColor = ConsoleColor.Red;
-                           // Console.WriteLine(error);
-                            Console.ResetColor();
-                            if (error == "Your session has expired.")
-                            {
-                                throw new Exception(@"y2mate.com returned Your session has expired. This happends sometimes and i dont know why but its because of y2mate :D");
-                            }
-                        }
+                    var stream = new MemoryStream();
 
+                    await httpStream.CopyToAsync(stream);
+                    stream.Flush();
+                    stream.Position = 0;
+
+                    return stream;
+                   
+                }
+            }
+        }
+
+        public static async Task DownloadVideoAsync(string videoid, string path, string type = "mp3", string quality = "128")
+        {
+            if (videoid == null) { throw new Exception("videoid was null"); }
+
+            using (var fileStream = new FileStream(path, FileMode.Create))
+            {
+                using (var stream = await GetStreamAsync(videoid, type, quality))
+                {
+                    await stream.CopyToAsync(fileStream);
                 }
 
             }
-       
-
         }
 
-        private static async Task<string> getvidAsync(string videoid)
+        private static async Task<string> GetYInfoAsync(string videoid)
         {
+            if (videoid == null) { throw new Exception("videoid was null"); }
+
             var url = "https://www.y2mate.com/mates/analyze/ajax";
             var yturl = "https://www.youtube.com/watch?v=" + videoid;
 
             var formContent = new FormUrlEncodedContent(new[]
           {
-    
+
     new KeyValuePair<string, string>("url", yturl),
     new KeyValuePair<string, string>("q_auto", "1"),
     new KeyValuePair<string, string>("ajax", "1")
@@ -231,11 +209,6 @@ namespace Y2Sharp
 
             var myHttpClient = new HttpClient();
             var response = await myHttpClient.PostAsync(url.ToString(), formContent);
-            
-
-
-
-
 
             using (var streamReader = new StreamReader(await response.Content.ReadAsStreamAsync(), encoding: Encoding.UTF8))
             {
@@ -243,30 +216,23 @@ namespace Y2Sharp
 
 
                 char quote = '\u0022';
-                
+
 
                 var id = (GetBetween(result, @"var k__id = \", "; var video_service"));
-                
+
                 id = id.Replace(quote.ToString(), string.Empty);
                 id = id.Replace(@"\", string.Empty);
 
-                if (DebugMode)
-                {
-                    Console.WriteLine(id);
-                }
+               
 
-                if(id == string.Empty)
+                if (id == string.Empty)
                 {
                     throw new Exception("Error getting __id from y2mate.com");
                 }
 
                 return (id);
-                
+
             }
-
-
-
-                
         }
 
         private static string GetBetween(string strSource, string strStart, string strEnd)
@@ -282,6 +248,6 @@ namespace Y2Sharp
             return "";
         }
 
-        
+
     }
 }

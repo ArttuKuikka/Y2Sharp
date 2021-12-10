@@ -46,7 +46,7 @@ namespace Y2SharpWPF
             else if(typebox.SelectedItem.ToString() == "MP4")
             {
                 qualitybox.Items.Clear();
-                foreach(var res in await Y2Sharp.youtube.ResolutionsAsync(videoid))
+                foreach(var res in await Y2Sharp.Youtube.ResolutionsAsync(videoid))
                 {
                     qualitybox.Items.Add(res);
                 }
@@ -94,7 +94,7 @@ namespace Y2SharpWPF
 
             string typetext = "MP3";
             SaveFileDialog saveFileDialog = new SaveFileDialog();
-            saveFileDialog.FileName = await Y2Sharp.youtube.VideotitleAsync(videoid);
+            saveFileDialog.FileName = await Y2Sharp.Youtube.VideotitleAsync(videoid);
             if (typebox.SelectedItem.ToString() == "MP3") { typetext = "Audio Files"; }
             if (typebox.SelectedItem.ToString() == "MP4") { typetext = "Video Files"; }
             saveFileDialog.Filter = typetext + " | *." + typebox.SelectedItem.ToString().ToLower();
@@ -108,7 +108,7 @@ namespace Y2SharpWPF
             {
                 try
                 {
-                    await Y2Sharp.youtube.DownloadAsync(videoid, System.IO.Path.GetFullPath(saveFileDialog.FileName).ToString(), typebox.SelectedItem.ToString().ToLower(), quality);
+                    await Y2Sharp.Youtube.DownloadVideoAsync(videoid, System.IO.Path.GetFullPath(saveFileDialog.FileName).ToString(), typebox.SelectedItem.ToString().ToLower(), quality);
                 }
                 catch (Exception ex)
                 {
@@ -145,7 +145,7 @@ namespace Y2SharpWPF
             else if (typebox.SelectedItem.ToString() == "MP4")
             {
                 qualitybox.Items.Clear();
-                foreach (var res in await Y2Sharp.youtube.ResolutionsAsync(videoid))
+                foreach (var res in await Y2Sharp.Youtube.ResolutionsAsync(videoid))
                 {
                     qualitybox.Items.Add(res);
                 }
