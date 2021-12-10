@@ -4,13 +4,23 @@
     <OutputType>Exe</OutputType>
     <TargetFramework>net5.0</TargetFramework>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
-    <Version>2.0</Version>
+    <Version>2.1</Version>
     <Authors>Arttu Kuikka</Authors>
     <PackageProjectUrl>https://github.com/ArttuKuikka/Y2Sharp</PackageProjectUrl>
     <RepositoryUrl>https://github.com/ArttuKuikka/Y2Sharp</RepositoryUrl>
     <RepositoryType>Github</RepositoryType>
     <Description>Fastest youtube downloader API using Y2Mate.com</Description>
     <PackageLicenseExpression></PackageLicenseExpression>
+    <PackageIcon>logo.png</PackageIcon>
+    <PackageIconUrl />
+    <PackageTags>c# youtube api downloader y2mate</PackageTags>
   </PropertyGroup>
+
+  <ItemGroup>
+    <None Include="..\Y2SharpWPF\logo.png">
+      <Pack>True</Pack>
+      <PackagePath></PackagePath>
+    </None>
+  </ItemGroup>
 
 </Project>

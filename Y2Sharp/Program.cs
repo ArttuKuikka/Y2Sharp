@@ -17,7 +17,7 @@ namespace Y2Sharp
             {
                 var videoid = Console.ReadLine();
                 
-                await DownloadVideoAsync(videoid, await VideotitleAsync(videoid) + ".mp3");
+                await DownloadAsync(videoid, await VideotitleAsync(videoid) + ".mp3");
             }
             catch(Exception e)
             {
