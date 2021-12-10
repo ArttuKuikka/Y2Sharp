@@ -108,7 +108,7 @@ namespace Y2SharpWPF
             {
                 try
                 {
-                    await Y2Sharp.Youtube.DownloadVideoAsync(videoid, System.IO.Path.GetFullPath(saveFileDialog.FileName).ToString(), typebox.SelectedItem.ToString().ToLower(), quality);
+                    await Y2Sharp.Youtube.DownloadAsync(videoid, System.IO.Path.GetFullPath(saveFileDialog.FileName).ToString(), typebox.SelectedItem.ToString().ToLower(), quality);
                 }
                 catch (Exception ex)
                 {

@@ -178,7 +178,7 @@ namespace Y2Sharp
             }
         }
 
-        public static async Task DownloadVideoAsync(string videoid, string path, string type = "mp3", string quality = "128")
+        public static async Task DownloadAsync(string videoid, string path, string type = "mp3", string quality = "128")
         {
             if (videoid == null) { throw new Exception("videoid was null"); }
 
