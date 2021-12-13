@@ -14,9 +14,14 @@
     <PackageIcon>logo.png</PackageIcon>
     <PackageIconUrl />
     <PackageTags>c# youtube api downloader y2mate</PackageTags>
+    <PackageReadmeFile>README.md</PackageReadmeFile>
   </PropertyGroup>
 
   <ItemGroup>
+    <None Include="..\README.md">
+      <Pack>True</Pack>
+      <PackagePath>\</PackagePath>
+    </None>
     <None Include="..\Y2SharpWPF\logo.png">
       <Pack>True</Pack>
       <PackagePath></PackagePath>
