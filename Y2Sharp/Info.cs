@@ -6,11 +6,11 @@ using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Y2Sharp
+namespace Y2Sharp.youtube
 {
     internal class Info
     {
-        public static async Task<string> GetYInfoAsync(string videoid)
+        public static async Task<string> GetY2MateID(string videoid) //gets _id from y2mate ajax to be used for downloading the video
         {
             if (videoid == null) { throw new Exception("videoid was null"); }
 

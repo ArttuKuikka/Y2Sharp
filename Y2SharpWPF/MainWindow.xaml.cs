@@ -26,6 +26,7 @@ namespace Y2SharpWPF
     public partial class MainWindow : Window
     {
         public string videoid;
+        
         public MainWindow()
         {
             InitializeComponent();
@@ -135,6 +136,8 @@ namespace Y2SharpWPF
             string videourl = URLtextbox.Text;
             videoid = videourl.Remove(0, 32);
             videoid = videoid.Remove(11, videoid.Length - 11);
+
+            var video = Y2Sharp.Youtube.
 
             if (typebox.SelectedItem.ToString() == "MP3")
             {
