@@ -13,8 +13,23 @@ Created because i found all other youtube downloader apis were too slow for my n
 Sample code
 
 ```
-await Y2Sharp.youtube.DownloadAsync("gQjAEbWZEgU", "music.mp3");
+await Y2Sharp.Youtube.Video.GetInfo(videoid);
+
+var video = new Y2Sharp.Youtube.Video();
+
+await video.DownloadAsync("Music.mp3");
 ```
+
+other info:
+```
+video.Title
+
+video.ThumbnailURL
+
+video.Url
+
+```
+
 
 There is also a WPF demo of this project under the folder Y2SharpWPF
 
@@ -23,7 +38,7 @@ install the latest nuget from https://www.nuget.org/packages/Y2Sharp/ and you ca
 explanations to all the parameters
 
 ```
-DownloadAsync(videoid, path, type, quality);
+DownloadAsync(path, type, quality);
 ```
 1. videoid is the part of youtube link after watch?v=
 2. path. where you want your downloaded file to be stored (by default force creates file so be carefull)
