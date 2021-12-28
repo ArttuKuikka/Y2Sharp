@@ -13,7 +13,7 @@ Created because i found all other youtube downloader apis were too slow for my n
 Sample code
 
 ```
-await Y2Sharp.Youtube.Video.GetInfo(videoid);
+await Y2Sharp.Youtube.Video.GetInfo("videoid !!change this to your video id!!");
 
 var video = new Y2Sharp.Youtube.Video();
 
