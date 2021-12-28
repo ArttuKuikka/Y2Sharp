@@ -29,3 +29,6 @@ DownloadAsync(videoid, path, type, quality);
 2. path. where you want your downloaded file to be stored (by default force creates file so be carefull)
 3. type. either mp3 or mp4. determines if downloaded content is audio or video.
 4. quality. for music the quality should allways be 128 but videos can be downloaded at any of youtubes default resulutions.
+
+
+If you are having problems please open a new issue or message me in discord Arttu#6180
