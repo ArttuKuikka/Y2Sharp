@@ -72,7 +72,7 @@ namespace Y2Sharp.Youtube
                 char quote = '\u0022';
 
 
-                var id = (GetBetween.GetBetweenStrings(result, @"var k__id = \", "; var video_service"));
+                var id = (Tools.GetBetween(result, @"var k__id = \", "; var video_service"));
 
                 id = id.Replace(quote.ToString(), string.Empty);
                 id = id.Replace(@"\", string.Empty);
@@ -95,7 +95,7 @@ namespace Y2Sharp.Youtube
             char quote = '\u0022';
             char backslash = '\u005c';
 
-            var title = GetBetween.GetBetweenStrings(HttpResponse, "k_data_vtitle = ", ";");
+            var title = Tools.GetBetween(HttpResponse, "k_data_vtitle = ", ";");
             title = title.Replace(quote.ToString(), string.Empty);
             title = title.Replace(backslash.ToString(), string.Empty);
 
@@ -167,7 +167,7 @@ namespace Y2Sharp.Youtube
 
                 char quote = '\u0022';
 
-                var link = (GetBetween.GetBetweenStrings(result, @"href=\" + quote, quote + " rel="));
+                var link = (Tools.GetBetween(result, @"href=\" + quote, quote + " rel="));
 
                 link = link.Replace(@"\", string.Empty);
 

@@ -140,7 +140,7 @@ namespace Y2SharpWPF
 
             await Y2Sharp.Youtube.Video.GetInfo(videoid);
 
-            var video = Y2Sharp.Youtube.
+            video1 = new Y2Sharp.Youtube.Video();
 
             if (typebox.SelectedItem.ToString() == "MP3")
             {
