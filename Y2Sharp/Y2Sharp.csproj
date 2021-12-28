@@ -2,9 +2,13 @@
 
   <PropertyGroup>
     <OutputType>Exe</OutputType>
-    <TargetFramework>net5.0</TargetFramework>
+    <TargetFramework>net6.0</TargetFramework>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+<<<<<<< Updated upstream
     <Version>2.1</Version>
+=======
+    <Version>4.0</Version>
+>>>>>>> Stashed changes
     <Authors>Arttu Kuikka</Authors>
     <PackageProjectUrl>https://github.com/ArttuKuikka/Y2Sharp</PackageProjectUrl>
     <RepositoryUrl>https://github.com/ArttuKuikka/Y2Sharp</RepositoryUrl>
@@ -14,6 +18,11 @@
     <PackageIcon>logo.png</PackageIcon>
     <PackageIconUrl />
     <PackageTags>c# youtube api downloader y2mate</PackageTags>
+<<<<<<< Updated upstream
+=======
+    <PackageReadmeFile>README.md</PackageReadmeFile>
+    <AnalysisLevel>6.0</AnalysisLevel>
+>>>>>>> Stashed changes
   </PropertyGroup>
 
   <ItemGroup>

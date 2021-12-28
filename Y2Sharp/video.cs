@@ -1,0 +1,209 @@
+﻿
+using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Linq;
+using System.Net;
+using System.Net.Http;
+using System.Text;
+using System.Threading.Tasks;
+
+
+namespace Y2Sharp.Youtube
+{
+    public class Video
+    {
+
+        public string Title { get; }
+        public string ThumbnailURL { get; }
+        public List<string> Resolutions { get; }
+        public string Url { get; }
+
+        private static string _videoid;
+
+        private static string resp { get; set; }
+
+        private static string y2id { get; set; }
+        
+
+        public Video()
+        {
+            if (_videoid == null) { throw new Exception("videoid was null. did you forget to GetInfo before running this"); }
+
+            var yturl = "https://www.youtube.com/watch?v=" + _videoid;
+
+            Title = GetTitle(resp);
+
+            ThumbnailURL = VideoThumbnailURL(_videoid);
+            
+            Resolutions = ResList(resp);
+
+            Url = yturl;
+           
+        }
+
+    
+
+        public static async Task GetInfo(string videoid) //Gets the raw Y2Mate response containing video title, thumbnail url and resolutions
+        {
+            if (videoid == null) { throw new Exception("videoid was null"); }
+
+            _videoid = videoid;
+
+            var url = "https://www.y2mate.com/mates/analyze/ajax";
+            var yturl = "https://www.youtube.com/watch?v=" + videoid;
+
+            var formContent = new FormUrlEncodedContent(new[]
+          {
+
+    new KeyValuePair<string, string>("url", yturl),
+    new KeyValuePair<string, string>("q_auto", "1"),
+    new KeyValuePair<string, string>("ajax", "1")
+});
+
+            var myHttpClient = new HttpClient();
+            var response = await myHttpClient.PostAsync(url.ToString(), formContent);
+
+            using (var streamReader = new StreamReader(await response.Content.ReadAsStreamAsync(), encoding: Encoding.UTF8))
+            {
+                string result = streamReader.ReadToEnd();
+                resp = result;
+
+                char quote = '\u0022';
+
+
+                var id = (GetBetween.GetBetweenStrings(result, @"var k__id = \", "; var video_service"));
+
+                id = id.Replace(quote.ToString(), string.Empty);
+                id = id.Replace(@"\", string.Empty);
+
+
+
+                if (id == string.Empty)
+                {
+                    throw new Exception("Error getting __id from y2mate.com. did you run GetInfo with await?");
+                }
+
+               y2id = id;
+
+            }
+
+        }
+
+        private string GetTitle(string HttpResponse)
+        {
+            char quote = '\u0022';
+            char backslash = '\u005c';
+
+            var title = GetBetween.GetBetweenStrings(HttpResponse, "k_data_vtitle = ", ";");
+            title = title.Replace(quote.ToString(), string.Empty);
+            title = title.Replace(backslash.ToString(), string.Empty);
+
+            return title;
+
+        }
+        private string VideoThumbnailURL(string videoid)
+        {
+            return "https://i.ytimg.com/vi/" + videoid + "/0.jpg";
+        }
+
+
+
+       private List<string> ResList(string HttpResponse)
+        {
+            var acceptableResolutions = new List<string>
+{
+    "144p",
+    "240p",
+    "360p",
+    "480p",
+    "720p",
+    "1080p",
+};
+            var resList = acceptableResolutions.Where(r => HttpResponse.Contains(r)).ToList();
+
+
+            resList.RemoveAll(item => item == string.Empty);
+
+            return resList;
+        }
+
+
+
+        public async Task<Stream> GetStreamAsync(string type = "mp3", string quality = "128")
+        {
+            var uri = "https://www.y2mate.com/mates/convert";
+
+            var formContent = new FormUrlEncodedContent(new[]
+            {
+    new KeyValuePair<string, string>("_id", y2id),
+    new KeyValuePair<string, string>("ajax", "1"),
+    new KeyValuePair<string, string>("fquality", quality),
+    new KeyValuePair<string, string>("ftype", type),
+    new KeyValuePair<string, string>("token", ""),
+    new KeyValuePair<string, string>("type", "youtube"),
+    new KeyValuePair<string, string>("v_id", _videoid)
+});
+
+
+            var myHttpClient = new HttpClient();
+            var response = await myHttpClient.PostAsync(uri.ToString(), formContent);
+
+
+            var errorcontent = await response.Content.ReadAsStringAsync();
+            if (errorcontent.Contains("Try again in"))
+            {
+                throw new Exception("y2mate.com returned Try again in 5 seconds. Might be cause by wrong video id");
+            }
+            if (errorcontent.Contains("Press f5 to try again."))
+            {
+                throw new Exception("y2mate.com returned Press f5 to try again. Might be caused by wrong quality or type");
+            }
+
+
+            using (var streamReader = new StreamReader(await response.Content.ReadAsStreamAsync(), encoding: Encoding.UTF8))
+            {
+                string result = streamReader.ReadToEnd();
+
+                char quote = '\u0022';
+
+                var link = (GetBetween.GetBetweenStrings(result, @"href=\" + quote, quote + " rel="));
+
+                link = link.Replace(@"\", string.Empty);
+
+                if (link == string.Empty) { throw new Exception("Error getting file link"); }
+
+                var httpClient = new HttpClient();
+
+                using (var httpStream = await httpClient.GetStreamAsync(link))
+                {
+                    var stream = new MemoryStream();
+
+                    await httpStream.CopyToAsync(stream);
+                    stream.Flush();
+                    stream.Position = 0;
+
+                    return stream;
+
+                }
+            }
+        }
+
+
+        public async Task DownloadAsync(string path, string type = "mp3", string quality = "128")
+        {
+          
+
+            using (var fileStream = new FileStream(path, FileMode.Create))
+            {
+                using (var stream = await GetStreamAsync(type, quality))
+                {
+                    await stream.CopyToAsync(fileStream);
+                }
+
+            }
+        }
+
+
+    }
+}
