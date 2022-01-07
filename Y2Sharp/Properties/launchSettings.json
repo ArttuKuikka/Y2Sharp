@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "Y2Sharp": {
+      "commandName": "Project",
+      "remoteDebugEnabled": false
+    }
+  }
+}

@@ -16,11 +16,13 @@ namespace Y2Sharp.Youtube
 
         public string Title { get; }
         public string ThumbnailURL { get; }
-        public List<string> Resolutions { get; }
+        public List<Resolutions> Resolutions { get; }
         public string Url { get; }
 
-        private static string _videoid;
+        public string Id { get; }
 
+        private static string video_id { get; set; }
+        
         private static string resp { get; set; }
 
         private static string y2id { get; set; }
@@ -28,13 +30,15 @@ namespace Y2Sharp.Youtube
 
         public Video()
         {
-            if (_videoid == null) { throw new Exception("videoid was null. did you forget to GetInfo before running this"); }
+            if (video_id == null) { throw new Exception("videoid was null. did you forget to GetInfo before running this"); }
 
-            var yturl = "https://www.youtube.com/watch?v=" + _videoid;
+            Id = video_id;
+
+            var yturl = "https://www.youtube.com/watch?v=" + video_id;
 
             Title = GetTitle(resp);
 
-            ThumbnailURL = VideoThumbnailURL(_videoid);
+            ThumbnailURL = VideoThumbnailURL(video_id);
             
             Resolutions = ResList(resp);
 
@@ -48,7 +52,9 @@ namespace Y2Sharp.Youtube
         {
             if (videoid == null) { throw new Exception("videoid was null"); }
 
-            _videoid = videoid;
+            if(videoid.Length != 11) { throw new Exception("videoid was too short or long"); }
+
+            video_id = videoid;
 
             var url = "https://www.y2mate.com/mates/analyze/ajax";
             var yturl = "https://www.youtube.com/watch?v=" + videoid;
@@ -109,23 +115,83 @@ namespace Y2Sharp.Youtube
 
 
 
-       private List<string> ResList(string HttpResponse)
+       private List<Resolutions> ResList(string HttpResponse)
         {
-            var acceptableResolutions = new List<string>
-{
-    "144p",
-    "240p",
-    "360p",
-    "480p",
-    "720p",
-    "1080p",
-};
-            var resList = acceptableResolutions.Where(r => HttpResponse.Contains(r)).ToList();
+            var resp = HttpResponse;
+            
+            
+
+            char backslash = '\u005c';
+
+            resp = resp.Replace(backslash.ToString(), string.Empty);
+
+            resp = resp.Replace("<thead> <tr> <th>Resolution</th> <th>FileSize</th> <th>Download</th> </tr> </thead>", string.Empty);
 
 
-            resList.RemoveAll(item => item == string.Empty);
+            
 
-            return resList;
+            var combos = new List<Resolutions>();
+
+            for(int i = 0; i < 6; i++)
+            {
+                var fullresp = Tools.GetBetween(resp, "<tr>", "/tr>");
+                
+
+                
+                
+
+                char quote = '\u0022';
+
+                var rep1 = $"rel={quote}nofollow{quote}> ";
+                var rep2 = " (.mp4)</a>";
+                var rep3 = $"rel={quote}nofollow{quote}> ";
+                var rep4 = " (.mp4) <span class";
+                var rep5 = "</td> <td>";
+                var rep6 = " MB</td>";
+
+                string parsedres = "";
+
+                string size = Tools.GetBetween(fullresp, rep5, rep6);
+
+                
+                size = size.Replace(".", ",");
+
+
+                if (fullresp.Contains($"(.mp4) <span class={quote}label"))
+                {
+                    parsedres = Tools.GetBetween(fullresp, rep3, rep4);
+                }
+                else
+                {
+                    parsedres = Tools.GetBetween(fullresp, rep1, rep2);
+                }
+
+                File.AppendAllText("roska.txt", parsedres + " " + size);
+               
+                    var res = new Resolutions()
+                    {
+                        res = parsedres,
+                        sizeasmb = Convert.ToDouble(size)
+                        
+                    };
+
+                    combos.Add(res);
+                
+
+                
+
+
+                string deletestring = "<tr>" + fullresp + "/tr>";
+                
+
+                resp = resp.Replace(deletestring, string.Empty);
+
+                
+
+            }
+
+
+            return combos;
         }
 
 
@@ -142,7 +208,7 @@ namespace Y2Sharp.Youtube
     new KeyValuePair<string, string>("ftype", type),
     new KeyValuePair<string, string>("token", ""),
     new KeyValuePair<string, string>("type", "youtube"),
-    new KeyValuePair<string, string>("v_id", _videoid)
+    new KeyValuePair<string, string>("v_id", video_id)
 });
 
 

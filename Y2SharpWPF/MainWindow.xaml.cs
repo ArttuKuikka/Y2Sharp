@@ -50,7 +50,7 @@ namespace Y2SharpWPF
                 qualitybox.Items.Clear();
                 foreach(var res in video1.Resolutions)
                 {
-                    qualitybox.Items.Add(res);
+                    qualitybox.Items.Add(res.res);
                 }
             }
         }
@@ -153,7 +153,7 @@ namespace Y2SharpWPF
                 qualitybox.Items.Clear();
                 foreach (var res in video1.Resolutions)
                 {
-                    qualitybox.Items.Add(res);
+                    qualitybox.Items.Add(res.res);
                 }
                 
             }

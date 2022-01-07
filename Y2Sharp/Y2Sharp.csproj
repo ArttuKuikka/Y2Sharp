@@ -4,7 +4,7 @@
     <OutputType>Exe</OutputType>
     <TargetFramework>netstandard2.0</TargetFramework>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
-    <Version>4.1</Version>
+    <Version>4.2</Version>
     <Authors>Arttu Kuikka</Authors>
     <PackageProjectUrl>https://github.com/ArttuKuikka/Y2Sharp</PackageProjectUrl>
     <RepositoryUrl>https://github.com/ArttuKuikka/Y2Sharp</RepositoryUrl>

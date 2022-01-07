@@ -23,6 +23,12 @@ namespace Y2Sharp
             Console.WriteLine(video.Title);
             Console.WriteLine(video.ThumbnailURL);
             Console.WriteLine(video.Url);
+            Console.Write(video.Id);
+
+            foreach(var res in video.Resolutions)
+            {
+                Console.WriteLine(res.res + " " + res.sizeasmb + "MB");
+            }
 
             await video.DownloadAsync("Music.mp3");
 
