@@ -166,7 +166,7 @@ namespace Y2Sharp.Youtube
                     parsedres = Tools.GetBetween(fullresp, rep1, rep2);
                 }
 
-                File.AppendAllText("roska.txt", parsedres + " " + size);
+                
                
                     var res = new Resolutions()
                     {
