@@ -173,7 +173,10 @@ namespace Y2Sharp.Youtube
                     parsedres = Tools.GetBetween(fullresp, rep1, rep2);
                 }
 
-                
+                if(size == "")
+                {
+                    size = "0";
+                }
                
                     var res = new Resolutions()
                     {

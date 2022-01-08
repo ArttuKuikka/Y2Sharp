@@ -104,9 +104,13 @@ namespace Y2SharpWPF
             saveFileDialog.InitialDirectory = "::{20D04FE0-3AEA-1069-A2D8-08002B30309D}";
             
 
+            video1.ProgressChanged += (FinalFileSize, CurrentFileSize, progressPercentage) =>
+            {
+                ProgresPalkki.Value = (double)progressPercentage;
 
-            
-            if(saveFileDialog.ShowDialog() == true)
+            };
+
+            if (saveFileDialog.ShowDialog() == true)
             {
                 try
                 {
