@@ -26,7 +26,14 @@ namespace Y2Sharp.Youtube
         private static string resp { get; set; }
 
         private static string y2id { get; set; }
-        
+
+        public delegate void ProgressChangedHandler(long? FinalFileSize, long CurrentFileSize, double? progressPercentage);
+
+        public event ProgressChangedHandler ProgressChanged;
+
+
+
+
 
         public Video()
         {
@@ -239,19 +246,23 @@ namespace Y2Sharp.Youtube
 
                 if (link == string.Empty) { throw new Exception("Error getting file link"); }
 
-                var httpClient = new HttpClient();
-
-                using (var httpStream = await httpClient.GetStreamAsync(link))
+                using (var client = new HttpClientDownloadWithProgress(link, "myvideo.mp4"))
                 {
-                    var stream = new MemoryStream();
+                    client.ProgressChanged += (totalFileSize, totalBytesDownloaded, progressPercentage) => {
+                        ProgressChanged(totalFileSize, totalBytesDownloaded, progressPercentage);
+                    };
 
-                    await httpStream.CopyToAsync(stream);
-                    stream.Flush();
-                    stream.Position = 0;
+                    await client.StartDownload();
 
-                    return stream;
 
+                    var striimi = client.MyStream;
+                    striimi.Position = 0;
+                    
+                    return striimi;
                 }
+
+
+                
             }
         }
 

@@ -10,7 +10,10 @@ namespace Y2Sharp
 {
     internal class program
     {
-
+        public static double ConvertBytesToMegabytes(long bytes)
+        {
+            return (bytes / 1024f) / 1024f;
+        }
         public static async Task Main(string[] args)
         {
 
@@ -30,10 +33,26 @@ namespace Y2Sharp
                 Console.WriteLine(res.res + " " + res.sizeasmb + "MB");
             }
 
-            await video.DownloadAsync("Music.mp3");
+            video.ProgressChanged += (FinalFileSize, CurrentFileSize, progressPercentage) =>
+            {
+
+                Console.WriteLine(Math.Round(ConvertBytesToMegabytes((long)CurrentFileSize), 2).ToString() + "MB / " + Math.Round(ConvertBytesToMegabytes((long)FinalFileSize), 2).ToString() + "MB " + progressPercentage.ToString() + "%");
+            };
+
+
+
+            await video.DownloadAsync("test.mp4", "mp4", "720");
+
+            
+
+
+
+
 
 
         }
+
+        
 
 
     }   
