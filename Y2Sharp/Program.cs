@@ -28,10 +28,12 @@ namespace Y2Sharp
             Console.WriteLine(video.Url);
             Console.Write(video.Id);
 
+            Console.BackgroundColor = ConsoleColor.Red;
             foreach(var res in video.Resolutions)
             {
                 Console.WriteLine(res.res + " " + res.sizeasmb + "MB");
             }
+            Console.ResetColor();
 
             video.ProgressChanged += (FinalFileSize, CurrentFileSize, progressPercentage) =>
             {

@@ -139,7 +139,7 @@ namespace Y2Sharp.Youtube
 
             var combos = new List<Resolutions>();
 
-            for(int i = 0; i < 6; i++)
+            for(int i = 0; i < 10; i++)
             {
                 var fullresp = Tools.GetBetween(resp, "<tr>", "/tr>");
                 
@@ -200,7 +200,7 @@ namespace Y2Sharp.Youtube
 
             }
 
-
+            combos.RemoveAll(item => item.res == string.Empty);
             return combos;
         }
 
