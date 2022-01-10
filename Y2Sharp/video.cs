@@ -251,9 +251,12 @@ namespace Y2Sharp.Youtube
 
                 using (var client = new HttpClientDownloadWithProgress(link, "myvideo.mp4"))
                 {
-                    client.ProgressChanged += (totalFileSize, totalBytesDownloaded, progressPercentage) => {
-                        ProgressChanged(totalFileSize, totalBytesDownloaded, progressPercentage);
-                    };
+                    if(ProgressChanged != null)
+                    {
+                        client.ProgressChanged += (totalFileSize, totalBytesDownloaded, progressPercentage) => {
+                            ProgressChanged(totalFileSize, totalBytesDownloaded, progressPercentage);
+                        };
+                    }
 
                     await client.StartDownload();
 
