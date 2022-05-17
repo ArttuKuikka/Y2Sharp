@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Y2SharpWPF"
         mc:Ignorable="d"
-        Title="Y2Sharp WPF" Height="441" Width="800" Icon="/logo.png">
+        Title="Y2Sharp WPF" Height="460" Width="800" Icon="/logo.png">
     <Grid Background="#FF2E2E2E" Height="435" VerticalAlignment="Top">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="71*"/>

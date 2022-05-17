@@ -208,6 +208,29 @@ namespace Y2Sharp.Youtube
 
         public async Task<Stream> GetStreamAsync(string type = "mp3", string quality = "128")
         {
+            
+            var link = await GetDownloadURL(type, quality);
+            using (var client = new HttpClientDownloadWithProgress(link, "myvideo.mp4"))
+            {
+                if (ProgressChanged != null)
+                {
+                    client.ProgressChanged += (totalFileSize, totalBytesDownloaded, progressPercentage) => {
+                        ProgressChanged(totalFileSize, totalBytesDownloaded, progressPercentage);
+                    };
+                }
+
+                await client.StartDownload();
+
+
+                var striimi = client.MyStream;
+                striimi.Position = 0;
+
+                return striimi;
+            }
+        }
+
+        public async Task<string> GetDownloadURL(string type = "mp3", string quality = "128")
+        {
             var uri = "https://www.y2mate.com/mates/convert";
 
             var formContent = new FormUrlEncodedContent(new[]
@@ -249,26 +272,10 @@ namespace Y2Sharp.Youtube
 
                 if (link == string.Empty) { throw new Exception("Error getting file link"); }
 
-                using (var client = new HttpClientDownloadWithProgress(link, "myvideo.mp4"))
-                {
-                    if(ProgressChanged != null)
-                    {
-                        client.ProgressChanged += (totalFileSize, totalBytesDownloaded, progressPercentage) => {
-                            ProgressChanged(totalFileSize, totalBytesDownloaded, progressPercentage);
-                        };
-                    }
-
-                    await client.StartDownload();
+                return link;
 
 
-                    var striimi = client.MyStream;
-                    striimi.Position = 0;
-                    
-                    return striimi;
-                }
 
-
-                
             }
         }
 
