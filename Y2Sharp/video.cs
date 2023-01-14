@@ -111,13 +111,9 @@ namespace Y2Sharp.Youtube
 
             var title = Tools.GetBetween(HttpResponse, "k_data_vtitle = ", ";");
             title = title.Replace(quote.ToString(), string.Empty);
-            title = title.Replace(backslash.ToString() + backslash.ToString(), backslash.ToString());
+            title = title.Replace(backslash.ToString(), string.Empty);
 
-
-
-            var unicodetitle = System.Net.WebUtility.HtmlDecode(title);
-
-            return unicodetitle;
+            return title;
 
         }
         private string VideoThumbnailURL(string videoid)
