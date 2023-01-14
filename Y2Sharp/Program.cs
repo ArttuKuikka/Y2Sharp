@@ -27,6 +27,7 @@ namespace Y2Sharp
             Console.WriteLine(video.ThumbnailURL);
             Console.WriteLine(video.Url);
             Console.Write(video.Id);
+            Console.WriteLine(video.Resolutions.Max().ToString());
 
             Console.BackgroundColor = ConsoleColor.Red;
             foreach(var res in video.Resolutions)

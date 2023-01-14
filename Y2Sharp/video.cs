@@ -7,6 +7,7 @@ using System.Net;
 using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
+using static System.Net.Mime.MediaTypeNames;
 
 
 namespace Y2Sharp.Youtube
@@ -110,9 +111,13 @@ namespace Y2Sharp.Youtube
 
             var title = Tools.GetBetween(HttpResponse, "k_data_vtitle = ", ";");
             title = title.Replace(quote.ToString(), string.Empty);
-            title = title.Replace(backslash.ToString(), string.Empty);
+            title = title.Replace(backslash.ToString() + backslash.ToString(), backslash.ToString());
 
-            return title;
+
+
+            var unicodetitle = System.Net.WebUtility.HtmlDecode(title);
+
+            return unicodetitle;
 
         }
         private string VideoThumbnailURL(string videoid)
@@ -151,8 +156,8 @@ namespace Y2Sharp.Youtube
 
                 var rep1 = $"rel={quote}nofollow{quote}> ";
                 var rep2 = " (.mp4)</a>";
-                var rep3 = $"rel={quote}nofollow{quote}> ";
-                var rep4 = " (.mp4) <span class";
+                var rep3 = $"data-fquality={quote}";
+                var rep4 = $"{quote}>";
                 var rep5 = "</td> <td>";
                 var rep6 = " MB</td>";
 
@@ -170,12 +175,20 @@ namespace Y2Sharp.Youtube
                 }
                 else
                 {
-                    parsedres = Tools.GetBetween(fullresp, rep1, rep2);
+                    parsedres = Tools.GetBetween(fullresp, rep3, rep4);
                 }
 
                 if(size == "")
                 {
                     size = "0";
+                }
+
+                if(parsedres.Length > 1)
+                {
+                    if (parsedres[parsedres.Length - 1] != 'p')
+                    {
+                        parsedres += "p";
+                    }
                 }
                
                     var res = new Resolutions()
@@ -201,6 +214,7 @@ namespace Y2Sharp.Youtube
             }
 
             combos.RemoveAll(item => item.res == string.Empty);
+            combos.RemoveAll(item => item.res == "128p");
             return combos;
         }
 
