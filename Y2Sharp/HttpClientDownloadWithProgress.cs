@@ -50,13 +50,13 @@ namespace Y2Sharp
             using (var contentStream = await response.Content.ReadAsStreamAsync())
             {
                 
-                await ProcessContentStream(totalBytes, contentStream);
+                await CustomProcessContentStream(totalBytes, contentStream);
 
             }
                 
         }
 
-        private async Task ProcessContentStream(long? totalDownloadSize, Stream contentStream)
+        private async Task CustomProcessContentStream(long? totalDownloadSize, Stream contentStream)
         {
             var totalBytesRead = 0L;
             var readCount = 0L;
