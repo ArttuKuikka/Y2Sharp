@@ -46,4 +46,4 @@ DownloadAsync(path, type, quality);
 4. quality. for music the quality should allways be 128 but videos can be downloaded at any of youtubes default resulutions.
 
 
-If you are having problems please open a new issue or message me in discord Arttu#6180
+If you are having problems please open a new issue or message me in discord @arttukk
