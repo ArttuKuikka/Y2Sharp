@@ -75,7 +75,16 @@ namespace Y2Sharp.Youtube
     new KeyValuePair<string, string>("ajax", "1")
 });
 
+            //Headerit jotenki erilailla
             var myHttpClient = new HttpClient();
+            myHttpClient.DefaultRequestHeaders.Add("Content-Type", "multipart/form-data");
+            myHttpClient.DefaultRequestHeaders.Add("Content-Lenght", "3000");
+            myHttpClient.DefaultRequestHeaders.Add("Host", "localhost");
+            myHttpClient.DefaultRequestHeaders.Add("User-Agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/116.0.0.0 Safari/537.36");
+            myHttpClient.DefaultRequestHeaders.Add("Accept", "*/*");
+            myHttpClient.DefaultRequestHeaders.Add("Accept-Encoding", "gzip, deflate, br");
+            myHttpClient.DefaultRequestHeaders.Add("Connection", "keep-alive");
+            
             var response = await myHttpClient.PostAsync(url.ToString(), formContent);
 
             using (var streamReader = new StreamReader(await response.Content.ReadAsStreamAsync(), encoding: Encoding.UTF8))
