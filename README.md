@@ -1,5 +1,5 @@
 # ARCHIVED!
-Due to Y2Mate transferring to cloudflare, this app isn't able to anymore retrive the information needed without solving the cloudflare challenge. I Recommend transeferring to Youtube-dl based download solution like https://github.com/Bluegrams/YoutubeDLSharp
+Due to Y2Mate transferring to cloudflare, this app isn't able to anymore retrive the information needed without solving the cloudflare challenge. I Recommend transeferring to Youtube-dl based download solution like https://github.com/Bluegrams/YoutubeDLSharp . I also recomend the youtube url parser in my tool repo https://github.com/ArttuKuikka/Tools/blob/master/Program.cs
 
 
 
