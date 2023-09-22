@@ -1,3 +1,8 @@
+# ARCHIVED!
+Due to Y2Mate transferring to cloudflare, this app isn't able to anymore retrive the information needed without solving the cloudflare challenge. I Recommend transeferring to Youtube-dl based download solution like https://github.com/Bluegrams/YoutubeDLSharp
+
+
+
 # Y2Sharp
 
 ![logo](https://user-images.githubusercontent.com/75498768/145097969-f49278db-7412-4368-b462-43e11cc50c86.png)
